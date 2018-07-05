@@ -11,7 +11,7 @@
 #' @param prop.variance.y : proportion of phenotypic variance explained by latent structure (intensity of confounding)
 #' @param prop.variance.x : proportion of exposure variance explained by latent structure (intensity of confounding)
 #' @param rho : correlation outcome/exposure (direct effect)
-#' @param sigma.error :	standard deviation of residual errors
+#' @param sigma :	standard deviation of residual errors
 #' @param sd.B : standard deviation for effect sizes (B: M->Y)
 #' @param mean.B :	(vector) mean of effect sizes
 #' @param sd.A :	standard deviation for effect sizes (A: M->X)
@@ -49,6 +49,7 @@
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
+#' @export
 r_mediation <- function(n,
                          p,
                          K,
@@ -138,7 +139,6 @@ r_mediation <- function(n,
 }
 
 
-##### fonction de mediation #####
 
 #' wrapper of mediation package (for one mediator)
 #'
@@ -164,7 +164,8 @@ r_mediation <- function(n,
 #' simu <- r_mediation(100, 500, 5)
 #' # test if the first CpG mediate a effect
 #' mod <- wrapMed(simu$X, simu$Y, simu$M[,1])
-wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100,...) {
+#' @export
+wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100) {
 
   if (is.null(CONF) == T) { # if no confouders
 
@@ -209,8 +210,6 @@ wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100,...) {
 }
 
 
-###### wrapper ######
-
 #' wrapGLM : naive glm function for multivarite ewas (no estimated confondeurs)
 #'
 #' @param X exposure
@@ -231,6 +230,7 @@ wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100,...) {
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
+#' @export
 wrapGLM <- function(X,Y,M,conf.known=NULL,mediation=F,top=20,family="binomial",sims = 100) {
 
   if (is.null(conf.known) == T) {
@@ -322,6 +322,7 @@ wrapGLM <- function(X,Y,M,conf.known=NULL,mediation=F,top=20,family="binomial",s
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
+#' @export
 wrapCATE <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50,sims = 100, ...) {
 
   if (is.null(conf.known) == T) {
@@ -396,6 +397,7 @@ wrapCATE <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50,sims = 100
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
+#' @export
 wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation = T,top = 50,sims = 100,...) {
 
   if (is.null(conf.known) == T) {
@@ -434,7 +436,7 @@ wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known),sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known),sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)
@@ -478,7 +480,8 @@ wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
-wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100,...) {
+#' @export
+wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100) {
   if (is.null(conf.known) == T) {
     Xnew <- cbind(X,Y)
   }
@@ -506,7 +509,7 @@ wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)
@@ -553,6 +556,7 @@ wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
+#' @export
 wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top = 50 ,sims = 100,...) {
   # SVA model
   if (is.null(conf.known) == T) {
@@ -603,7 +607,7 @@ wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top 
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)
@@ -657,6 +661,7 @@ wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top 
 #' # or with a previous glm
 #' mod1 <- wrapGLM(simu$X, simu$Y, mediation = F)
 #' mod2 <- wrapRUV(simu$X, simu$Y, 5, mediation = T, meth ="RUV2, GLMwrap = mod1)
+#' @export
 wrapRUV <- function(X,Y,M,K,ctl=NULL,r.ctl=0.2,meth=c("RUV2","RUV4"),conf.known=NULL,mediation=T,top=50,
                     GLMwrap = NULL, sims = 100,...) {
   # search gene control
@@ -698,7 +703,7 @@ wrapRUV <- function(X,Y,M,K,ctl=NULL,r.ctl=0.2,meth=c("RUV2","RUV4"),conf.known=
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf,conf.known), sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)
@@ -744,7 +749,7 @@ wrapRUV <- function(X,Y,M,K,ctl=NULL,r.ctl=0.2,meth=c("RUV2","RUV4"),conf.known=
 #' # quick result of multivariate ewas
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
-#'
+#' @export
 wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, sims = 100,...) {
   # RefFreeEwas model
   mod <- RefFreeEWAS::RefFreeEwasModel(t(M),cbind(1, X, Y, conf.known),K = K)
@@ -774,7 +779,7 @@ wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, 
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf1,conf.known), sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = cbind(conf1,conf.known), sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)
@@ -800,6 +805,7 @@ wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, 
 #' @param X exposure
 #' @param Y outcome
 #' @param M methylation matrix
+#' @param conf.known known confondeurs
 #' @param mediation TRUE or FALSE, if TRUE : independant mediation analysis
 #' @param GLMwrap result of wrapGLM
 #' @param top If mediation is true, then "top" is the number of CpGs analyzed by wrapMed()
@@ -821,7 +827,8 @@ wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, 
 #' # or with a previous glm
 #' mod1 <- wrapGLM(simu$X, simu$Y, mediation = F)
 #' mod2 <- wrapBACO(simu$X, simu$Y, mediation = T, GLMwrap = mod1)
-wrapBACO <- function(X,Y,M,conf.known=NULL,mediation = T,top = 50,GLMwrap = NULL, sims = 100,...) {
+#' @export
+wrapBACO <- function(X,Y,M,conf.known=NULL,mediation = T,top = 50,GLMwrap = NULL, sims = 100) {
   # GLM
   if (is.null(GLMwrap) == F){
     coeff <- GLMwrap
@@ -857,7 +864,7 @@ wrapBACO <- function(X,Y,M,conf.known=NULL,mediation = T,top = 50,GLMwrap = NULL
     ACME.p.med <- NULL
 
     for (i in 1:top) {
-      m <- wrapMed(X,Y,mediator = med[,i],CONF = conf.known, sims = sims,...)
+      m <- wrapMed(X,Y,mediator = med[,i],CONF = conf.known, sims = sims)
 
       ACME.eff <- c(ACME.eff, m$ACME.eff)
       ACME.p.med <- c(ACME.p.med, m$ACME.p.med)

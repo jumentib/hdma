@@ -48,5 +48,4 @@ mod <- wrapRFE(simu$X, simu$Y, 5, mediation = T)
 # quick result of multivariate ewas
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
-
 }

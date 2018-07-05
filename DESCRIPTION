@@ -8,7 +8,7 @@ Description: This package enables the conduct of high-dimensional mediation anal
     A large number of methods estimating confounders for this kind of analysis can be used. 
     In addition, a high-dimensional mediation analysis data simulator has been implemented
     to allow the comparison of the different methods. 
-License: What license is it under?
+License: GPL-3 
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1

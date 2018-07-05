@@ -30,6 +30,8 @@ r_mediation(n, p, K, freq = NULL, prop.causal.x = 0.01,
 
 \item{rho}{: correlation outcome/exposure (direct effect)}
 
+\item{sigma}{:    standard deviation of residual errors}
+
 \item{sd.A}{:    standard deviation for effect sizes (A: M->X)}
 
 \item{mean.A}{:    (vector) mean of effect sizes}
@@ -43,8 +45,6 @@ r_mediation(n, p, K, freq = NULL, prop.causal.x = 0.01,
 \item{sd.V}{: standard deviations for loadings}
 
 \item{prop.causal}{: proportion of causal variables (probes/loci)}
-
-\item{sigma.error}{:    standard deviation of residual errors}
 }
 \value{
 M : matrix of methylation beta values

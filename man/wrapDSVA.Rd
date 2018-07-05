@@ -5,7 +5,7 @@
 \title{wrapDSVA : multivarite ewas and mediation function (coufounders estimated via dSVA method)}
 \usage{
 wrapDSVA(X, Y, M, K, conf.known = NULL, mediation = T, top = 50,
-  sims = 100, ...)
+  sims = 100)
 }
 \arguments{
 \item{X}{exposure}

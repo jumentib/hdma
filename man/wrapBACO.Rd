@@ -5,7 +5,7 @@
 \title{wrapBACO : multivarite ewas and mediation function (no coufounders estimated)}
 \usage{
 wrapBACO(X, Y, M, conf.known = NULL, mediation = T, top = 50,
-  GLMwrap = NULL, sims = 100, ...)
+  GLMwrap = NULL, sims = 100)
 }
 \arguments{
 \item{X}{exposure}
@@ -13,6 +13,8 @@ wrapBACO(X, Y, M, conf.known = NULL, mediation = T, top = 50,
 \item{Y}{outcome}
 
 \item{M}{methylation matrix}
+
+\item{conf.known}{known confondeurs}
 
 \item{mediation}{TRUE or FALSE, if TRUE : independant mediation analysis}
 

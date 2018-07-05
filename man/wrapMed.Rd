@@ -4,7 +4,7 @@
 \alias{wrapMed}
 \title{wrapper of mediation package (for one mediator)}
 \usage{
-wrapMed(X, Y, mediator, CONF = NULL, sims = 100, ...)
+wrapMed(X, Y, mediator, CONF = NULL, sims = 100)
 }
 \arguments{
 \item{X}{exposure (continuous)}
