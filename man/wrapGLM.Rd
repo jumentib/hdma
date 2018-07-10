@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapGLM}
 \alias{wrapGLM}
-\title{wrapGLM : naive glm function for multivarite ewas (no estimated confondeurs)}
+\title{wrapGLM : naive glm function for mediation EWAS and independent mediation analysis (no estimated confondeurs)}
 \usage{
 wrapGLM(X, Y, M, conf.known = NULL, mediation = F, top = 20,
   family = "binomial", sims = 100)
@@ -28,14 +28,18 @@ wrapGLM(X, Y, M, conf.known = NULL, mediation = F, top = 20,
 pval, qval, score, standard errors and effect sizes for each CpG
 }
 \description{
-wrapGLM : naive glm function for multivarite ewas (no estimated confondeurs)
+wrapGLM : naive glm function for mediation EWAS and independent mediation analysis (no estimated confondeurs)
+}
+\details{
+This function uses a generalized linear model "glm" to perform association tests of the mediation EWAS. 
+Note that no confusers are estimated in this function.
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis
+# do a mediation EWAS and the independant mediation analysis
 mod <- wrapGLM(simu$X, simu$Y, mediation = T)
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 }

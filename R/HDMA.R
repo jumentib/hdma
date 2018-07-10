@@ -210,7 +210,7 @@ wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100) {
 }
 
 
-#' wrapGLM : naive glm function for multivarite ewas (no estimated confondeurs)
+#' wrapGLM : naive glm function for mediation EWAS and independent mediation analysis (no estimated confondeurs)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -222,12 +222,18 @@ wrapMed <- function(X,Y,mediator,CONF = NULL,sims=100) {
 #' @param sims Number of MC simulations in the mediation model
 #'
 #' @return pval, qval, score, standard errors and effect sizes for each CpG
+#' 
+#' @details
+#' 
+#' This function uses a generalized linear model "glm" to perform association tests of the mediation EWAS. 
+#' Note that no confusers are estimated in this function.
+#' 
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapGLM(simu$X, simu$Y, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -296,7 +302,7 @@ wrapGLM <- function(X,Y,M,conf.known=NULL,mediation=F,top=20,family="binomial",s
               media  = media))
 }
 
-#' wrapCATE : multivarite ewas and mediation function (coufounders estimated via CATE method)
+#' wrapCATE : Mediation EWAS and independent mediation analysis (coufounders estimated via CATE method)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -314,12 +320,17 @@ wrapGLM <- function(X,Y,M,conf.known=NULL,mediation=F,top=20,family="binomial",s
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole CATE model
 #'
+#' @details 
+#' 
+#' This function estimates the confusers via the CATE model. 
+#' In addition, the CATE model uses robust linear regressions "rlm" to perform EWAS associations testing of mediation.
+#' 
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapCATE(simu$X, simu$Y, 5, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -371,7 +382,7 @@ wrapCATE <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50,sims = 100
               media = media))
 }
 
-#' wrapLFMM : multivarite ewas and mediation function (coufounders estimated via LFMM methods)
+#' wrapLFMM : Mediation EWAS and independent mediation analysis (coufounders estimated via LFMM methods)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -388,13 +399,19 @@ wrapCATE <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50,sims = 100
 #' @return conf : coufounders estimated via LFMM methods
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole LFMM model
+#' 
+#' @details 
+#' 
+#' This function estimates the confusers via the LFMM model. There are two sub-models of LFMM to estimate the confondeurs, 
+#' "lasso" and "ridge".  
+#' In addition, the LFMM model uses linear regression "lm" to perform associations tests of mediation EWAS.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis (LFMM ridge)
+#' # do a mediation EWAS and the independant mediation analysis (LFMM ridge)
 #' mod <- wrapLFMM(simu$X, simu$Y, 5, mediation = T,meth = "ridge")
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -456,7 +473,7 @@ wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation
               media = media))
 }
 
-#' wrapDSVA : multivarite ewas and mediation function (coufounders estimated via dSVA method)
+#' wrapDSVA : Mediation EWAS and independent mediation analysis (coufounders estimated via dSVA method)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -471,13 +488,18 @@ wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation
 #' @return conf : coufounders estimated via dSVA method
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole dSVA model
+#' 
+#' @details 
+#' 
+#' This function estimates the confusers via the dSVA model. 
+#' In addition, the dSVA model use linear regression "lm" to perform associations tests of mediation EWAS.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapDSVA(simu$X, simu$Y, 5, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -530,7 +552,7 @@ wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100
 }
 
 
-#' wrapSVA : multivarite ewas and mediation function (coufounders estimated via SVA method)
+#' wrapSVA : Mediation EWAS and independent mediation analysis (coufounders estimated via SVA method)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -547,13 +569,18 @@ wrapDSVA <- function(X,Y,M,K,conf.known = NULL,mediation = T,top = 50, sims =100
 #' @return conf : coufounders estimated via SVA method
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole SVA model
+#' 
+#' #' @details 
+#' 
+#' This function estimates the confusers via the SVA model. 
+#' In addition, the SVA model use linear regression "lm" to perform associations tests of mediation EWAS.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapSVA(simu$X, simu$Y, 5, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -628,7 +655,7 @@ wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top 
 }
 
 
-#' wrapRUV : multivarite ewas and mediation function (coufounders estimated via RUV methods)
+#' wrapRUV : Mediation EWAS and independent mediation analysis (coufounders estimated via RUV methods)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -636,10 +663,10 @@ wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top 
 #' @param conf.known known confondeurs
 #' @param K number of coufounders to estimate
 #' @param mediation TRUE or FALSE, if TRUE : independant mediation analysis
-#' @param ctl RUV methods need a control gene vector. if it is not known, it will be estimated by  naive glms
+#' @param ctl RUV methods need a control gene vector. if it is not known, it will be estimated by naive glms
 #' @param r.ctl alpha risk for the estimation of the control gene vector
 #' @param meth RUV combines two methods to estimate coufondeurs: "RUV2" and "RUV4"
-#' @param GLMwrap result of wrapGLM
+#' @param GLMwrap result of wrapGLM to estimate the control gene
 #' @param top If mediation is true, then "top" is the number of CpGs analyzed by wrapMed()
 #' @param sims Number of MC simulations in the mediation model
 #' @param ... other options of the RUVs models
@@ -648,13 +675,20 @@ wrapSVA <- function(X,Y,M,K,controls = NULL,conf.known = NULL,mediation = T,top 
 #' @return conf : coufounders estimated via RUV methods
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole RUV model
+#' 
+#' #' @details 
+#' 
+#' This function estimates the confusers via the RUV model. There are two sub-models of RUV to estimate the confondeurs, 
+#' "RUV2" and "RUV4". Note that the RUV model uses control genes to estimate confounders. 
+#' If you do not know it, it can be estimated via the wrapGLM function.
+#' In addition, the RUV model use linear regression "lm" to perform associations tests of mediation EWAS.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapRUV(simu$X, simu$Y, 5, mediation = T, meth ="RUV2)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #'
@@ -723,7 +757,7 @@ wrapRUV <- function(X,Y,M,K,ctl=NULL,r.ctl=0.2,meth=c("RUV2","RUV4"),conf.known=
               media = media))
 }
 
-#' wrapRFE : multivarite ewas and mediation function (coufounders estimated via RefFreeEWAS methods)
+#' wrapRFE : Mediation EWAS and independent mediation analysis (coufounders estimated via RefFreeEWAS methods)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -740,13 +774,21 @@ wrapRUV <- function(X,Y,M,K,ctl=NULL,r.ctl=0.2,meth=c("RUV2","RUV4"),conf.known=
 #' @return conf : coufounders estimated via RefFreeEWAS methods
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole RefFreeEWAS model
+#' 
+#' #' @details 
+#' 
+#' This function estimates the confusers via the RefFreeEWAS model. 
+#' In addition, the RefFreeEWAS model use a bootstrap method to 
+#' calculate the pValues of the associations tests of mediation EWAS.
+#' Note that it is preferable to use confondeurs estimate by RefFreeEWAS in another test for association (glm for example) 
+#' than using pValues calculated by the bootstrap method RefFreeEWAS.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapRFE(simu$X, simu$Y, 5, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #' @export
@@ -800,7 +842,7 @@ wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, 
               media = media))
 }
 
-#' wrapBACO : multivarite ewas and mediation function (no coufounders estimated)
+#' wrapBACO : Mediation EWAS and independent mediation analysis (no coufounders estimated)
 #'
 #' @param X exposure
 #' @param Y outcome
@@ -814,13 +856,19 @@ wrapRFE <- function(X,Y,M,K,nbboot=50,conf.known = NULL,mediation = T,top = 50, 
 #' @return pval, qval, score for each CpG
 #' @return media : if mediation = T, result of wrapMed() function
 #' @return mod : whole bacon model
+#' 
+#' @details 
+#' 
+#' The BACON model does not consider confusers but it aims to reduce the bias and inflation
+#'  of a statistical test that in our case is a glm. 
+#' Note that this method can be combined with a method estimating confondeurs.
 #'
 #' @examples
 #' # Simulate data :
 #' simu <- r_mediation(100, 500, 5)
-#' # do a multivariate ewas and the independant mediation analysis
+#' # do a mediation EWAS and the independant mediation analysis
 #' mod <- wrapBACO(simu$X, simu$Y, mediation = T)
-#' # quick result of multivariate ewas
+#' # quick result of mediation EWAS
 #' plot(-log10(mod$pval))
 #' points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 #'

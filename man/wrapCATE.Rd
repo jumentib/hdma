@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapCATE}
 \alias{wrapCATE}
-\title{wrapCATE : multivarite ewas and mediation function (coufounders estimated via CATE method)}
+\title{wrapCATE : Mediation EWAS and independent mediation analysis (coufounders estimated via CATE method)}
 \usage{
 wrapCATE(X, Y, M, K, conf.known = NULL, mediation = T, top = 50,
   sims = 100, ...)
@@ -36,14 +36,18 @@ media : if mediation = T, result of wrapMed() function
 mod : whole CATE model
 }
 \description{
-wrapCATE : multivarite ewas and mediation function (coufounders estimated via CATE method)
+wrapCATE : Mediation EWAS and independent mediation analysis (coufounders estimated via CATE method)
+}
+\details{
+This function estimates the confusers via the CATE model. 
+In addition, the CATE model uses robust linear regressions "rlm" to perform EWAS associations testing of mediation.
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis
+# do a mediation EWAS and the independant mediation analysis
 mod <- wrapCATE(simu$X, simu$Y, 5, mediation = T)
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapDSVA}
 \alias{wrapDSVA}
-\title{wrapDSVA : multivarite ewas and mediation function (coufounders estimated via dSVA method)}
+\title{wrapDSVA : Mediation EWAS and independent mediation analysis (coufounders estimated via dSVA method)}
 \usage{
 wrapDSVA(X, Y, M, K, conf.known = NULL, mediation = T, top = 50,
   sims = 100)
@@ -34,14 +34,18 @@ media : if mediation = T, result of wrapMed() function
 mod : whole dSVA model
 }
 \description{
-wrapDSVA : multivarite ewas and mediation function (coufounders estimated via dSVA method)
+wrapDSVA : Mediation EWAS and independent mediation analysis (coufounders estimated via dSVA method)
+}
+\details{
+This function estimates the confusers via the dSVA model. 
+In addition, the dSVA model use linear regression "lm" to perform associations tests of mediation EWAS.
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis
+# do a mediation EWAS and the independant mediation analysis
 mod <- wrapDSVA(simu$X, simu$Y, 5, mediation = T)
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 }

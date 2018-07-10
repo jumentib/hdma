@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapRFE}
 \alias{wrapRFE}
-\title{wrapRFE : multivarite ewas and mediation function (coufounders estimated via RefFreeEWAS methods)}
+\title{wrapRFE : Mediation EWAS and independent mediation analysis (coufounders estimated via RefFreeEWAS methods)}
 \usage{
 wrapRFE(X, Y, M, K, nbboot = 50, conf.known = NULL, mediation = T,
   top = 50, sims = 100, ...)
@@ -36,16 +36,24 @@ conf : coufounders estimated via RefFreeEWAS methods
 media : if mediation = T, result of wrapMed() function
 
 mod : whole RefFreeEWAS model
+
+#' @details 
+
+This function estimates the confusers via the RefFreeEWAS model. 
+In addition, the RefFreeEWAS model use a bootstrap method to 
+calculate the pValues of the associations tests of mediation EWAS.
+Note that it is preferable to use confondeurs estimate by RefFreeEWAS in another test for association (glm for example) 
+than using pValues calculated by the bootstrap method RefFreeEWAS.
 }
 \description{
-wrapRFE : multivarite ewas and mediation function (coufounders estimated via RefFreeEWAS methods)
+wrapRFE : Mediation EWAS and independent mediation analysis (coufounders estimated via RefFreeEWAS methods)
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis
+# do a mediation EWAS and the independant mediation analysis
 mod <- wrapRFE(simu$X, simu$Y, 5, mediation = T)
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 }

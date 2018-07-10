@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapBACO}
 \alias{wrapBACO}
-\title{wrapBACO : multivarite ewas and mediation function (no coufounders estimated)}
+\title{wrapBACO : Mediation EWAS and independent mediation analysis (no coufounders estimated)}
 \usage{
 wrapBACO(X, Y, M, conf.known = NULL, mediation = T, top = 50,
   GLMwrap = NULL, sims = 100)
@@ -32,14 +32,19 @@ media : if mediation = T, result of wrapMed() function
 mod : whole bacon model
 }
 \description{
-wrapBACO : multivarite ewas and mediation function (no coufounders estimated)
+wrapBACO : Mediation EWAS and independent mediation analysis (no coufounders estimated)
+}
+\details{
+The BACON model does not consider confusers but it aims to reduce the bias and inflation
+ of a statistical test that in our case is a glm. 
+Note that this method can be combined with a method estimating confondeurs.
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis
+# do a mediation EWAS and the independant mediation analysis
 mod <- wrapBACO(simu$X, simu$Y, mediation = T)
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 

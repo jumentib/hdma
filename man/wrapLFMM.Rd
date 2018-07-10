@@ -2,7 +2,7 @@
 % Please edit documentation in R/HDMA.R
 \name{wrapLFMM}
 \alias{wrapLFMM}
-\title{wrapLFMM : multivarite ewas and mediation function (coufounders estimated via LFMM methods)}
+\title{wrapLFMM : Mediation EWAS and independent mediation analysis (coufounders estimated via LFMM methods)}
 \usage{
 wrapLFMM(X, Y, M, K, meth = c("ridge", "lasso"), conf.known = NULL,
   mediation = T, top = 50, sims = 100, ...)
@@ -38,14 +38,19 @@ media : if mediation = T, result of wrapMed() function
 mod : whole LFMM model
 }
 \description{
-wrapLFMM : multivarite ewas and mediation function (coufounders estimated via LFMM methods)
+wrapLFMM : Mediation EWAS and independent mediation analysis (coufounders estimated via LFMM methods)
+}
+\details{
+This function estimates the confusers via the LFMM model. There are two sub-models of LFMM to estimate the confondeurs, 
+"lasso" and "ridge".  
+In addition, the LFMM model uses linear regression "lm" to perform associations tests of mediation EWAS.
 }
 \examples{
 # Simulate data :
 simu <- r_mediation(100, 500, 5)
-# do a multivariate ewas and the independant mediation analysis (LFMM ridge)
+# do a mediation EWAS and the independant mediation analysis (LFMM ridge)
 mod <- wrapLFMM(simu$X, simu$Y, 5, mediation = T,meth = "ridge")
-# quick result of multivariate ewas
+# quick result of mediation EWAS
 plot(-log10(mod$pval))
 points(simu$mediators, -log10(mod$pval[simu$mediators]),col = 2)
 }
