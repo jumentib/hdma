@@ -469,7 +469,7 @@ wrapLFMM <- function(X,Y,M,K,meth=c("ridge","lasso"),conf.known = NULL,mediation
               qval  = qval,
               conf  = conf,
               score = cbind(score.x,score.y),
-              mod   = list(mod,mod1),
+              mod   = list(mod = mod,test = mod1),
               media = media))
 }
 
