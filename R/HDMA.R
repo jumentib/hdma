@@ -1,4 +1,4 @@
-#' r_mediation : function to simulate DNA methylation data for mediation analyzi
+#' r_mediation : function to simulate DNA methylation data for mediation analyzis
 #'
 #' @param n	: number of individuals
 #' @param p	: number of cpg variables
